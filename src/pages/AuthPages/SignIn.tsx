@@ -21,6 +21,8 @@ export default function SignIn() {
         email,
         password,
       });
+
+      console.log("API response:", response);
       
       // Check if response is 200 Ok and check is_admin field. 
       if (response.status === 200) {
@@ -49,7 +51,6 @@ export default function SignIn() {
     } catch (err: any) {
       console.error("Login error:", err);
     
-      // Axios-specific: check if it's a server response error
       if (err.response) {
         console.error("Response data:", err.response.data);
         console.error("Response status:", err.response.status);
@@ -61,7 +62,8 @@ export default function SignIn() {
         console.error("Error during setup:", err.message);
         setError("Unexpected error occurred.");
       }
-    } finally {
+    }
+     finally {
       setLoading(false);
     }
   }
