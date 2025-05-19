@@ -16,9 +16,9 @@ export default function AuthorizeAdmin() {
     setError("");
 
     try {
-      const response = await apiClient.post("/authorize", { email });
+      const response = await apiClient.post("/users/admin", { email });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setSuccess(true);
         setEmail("");
       } else {
