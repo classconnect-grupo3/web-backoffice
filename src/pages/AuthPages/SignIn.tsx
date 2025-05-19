@@ -26,11 +26,19 @@ export default function SignIn() {
       
       // Check if response is 200 Ok and check is_admin field. 
       if (response.status === 200) {
-        const { id_token, is_admin } = response.data as {
+        const { id_token, user_info } = response.data as {
           id_token: string;
-          is_admin: boolean;
-          user_location: string;
+          user_info: {
+            is_admin: boolean;
+            uid: string;
+            name: string;
+            surname: string;
+            latitude: number | null;
+            longitude: number | null;
+          };
         };
+      
+        const { is_admin } = user_info;
 
       // Save token and user info (adjust as per your app context/state management)
         localStorage.setItem("id_token", id_token);
