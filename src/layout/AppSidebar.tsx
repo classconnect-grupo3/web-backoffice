@@ -90,6 +90,20 @@ const othersItems: NavItem[] = [
       { name: "Sign Up", path: "/signup", pro: false },
     ],
   },
+
+  {
+    icon: <PlugInIcon />,
+    name: "Authentication",
+    subItems: [
+      { name: "Sign In", path: "/signin", pro: false },
+      { name: "Sign Up", path: "/signup", pro: false },
+    ],
+  },
+  {
+    icon: <UserCircleIcon />, // You can replace this with any other icon you prefer
+    name: "Authorize Admin",
+    path: "/authorize-admin",
+  },
 ];
 
 const AppSidebar: React.FC = () => {
