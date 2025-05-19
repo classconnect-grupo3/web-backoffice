@@ -18,6 +18,7 @@ import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import Unauthorized from "./pages/OtherPage/Unauthorized";
 
 export default function App() {
   return (
@@ -59,6 +60,8 @@ export default function App() {
           </Route>
           {/* Auth Layout */}
           <Route path="/signin" element={<SignIn />} />
+
+          <Route path="/unauthorized" element={<Unauthorized />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
