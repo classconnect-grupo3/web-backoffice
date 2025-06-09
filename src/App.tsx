@@ -20,6 +20,7 @@ import Home from "./pages/Dashboard/Home";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import Unauthorized from "./pages/OtherPage/Unauthorized";
 import AuthorizeAdmin from "./pages/Users/AuthorizeAdmin";
+import BlockUser from "./pages/Users/BlockUser";
 
 export default function App() {
   return (
@@ -37,7 +38,8 @@ export default function App() {
             <Route index path="/" element={<Home />} />
 
             <Route path="/authorize-admin" element={<AuthorizeAdmin />} />
-
+            <Route path="/block-user" element={<BlockUser />} />
+            
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
