@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../../lib/http";
-import * as SecureStore from "expo-secure-store";
-
-
-const TOKEN_KEY = 'session';
-const USER_ID_KEY = 'user_id';
-const USER_NAME_KEY = 'user_name';
-const USER_SURNAME_KEY = 'user_surname';
 
 interface LoginResponse {
   id_token: string;
@@ -38,19 +31,9 @@ export default function SignIn() {
       const { data } = await apiClient.post<LoginResponse>("/login/email", { email, password });
       const token = data.id_token;
       const user_info = data.user_info;
-      const user = {
-        id: user_info.uid,
-        name: user_info.name,
-        surname: user_info.surname,
-      }
       console.log("Login data: ", data);
   
-      await SecureStore.setItemAsync(TOKEN_KEY, token);
-      await SecureStore.setItemAsync(USER_ID_KEY, user.id);
-      await SecureStore.setItemAsync(USER_NAME_KEY, user.name);
-      await SecureStore.setItemAsync(USER_SURNAME_KEY, user.surname);
       apiClient.defaults.headers.common['Authorization'] = "Bearer ${token}";
-
 
       console.log("API response:", data);
       
