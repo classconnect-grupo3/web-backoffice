@@ -1,6 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../../lib/http";
+import * as SecureStore from "expo-secure-store";
+
+
+const TOKEN_KEY = 'session';
+const USER_ID_KEY = 'user_id';
+const USER_NAME_KEY = 'user_name';
+const USER_SURNAME_KEY = 'user_surname';
+
+interface LoginResponse {
+  id_token: string;
+  user_info: {
+    uid: string;
+    name: string;
+    surname: string;
+    is_admin: boolean;
+    latitude?: number | null;
+    longitude?: number | null;
+  };
+}
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -10,51 +29,43 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const response = await apiClient.post("/login/email", {
-        email,
-        password,
-      });
+      const { data } = await apiClient.post<LoginResponse>("/login/email", { email, password });
+      const token = data.id_token;
+      const user_info = data.user_info;
+      const user = {
+        id: user_info.uid,
+        name: user_info.name,
+        surname: user_info.surname,
+      }
+      console.log("Login data: ", data);
+  
+      await SecureStore.setItemAsync(TOKEN_KEY, token);
+      await SecureStore.setItemAsync(USER_ID_KEY, user.id);
+      await SecureStore.setItemAsync(USER_NAME_KEY, user.name);
+      await SecureStore.setItemAsync(USER_SURNAME_KEY, user.surname);
+      apiClient.defaults.headers.common['Authorization'] = "Bearer ${token}";
 
-      console.log("API response:", response);
+
+      console.log("API response:", data);
       
-      // Check if response is 200 Ok and check is_admin field. 
-      if (response.status === 200) {
-        const { id_token, user_info } = response.data as {
-          id_token: string;
-          user_info: {
-            is_admin: boolean;
-            uid: string;
-            name: string;
-            surname: string;
-            latitude: number | null;
-            longitude: number | null;
-          };
-        };
-      
-        const { is_admin } = user_info;
+      const { is_admin } = user_info;
 
       // Save token and user info (adjust as per your app context/state management)
-        localStorage.setItem("id_token", id_token);
+        localStorage.setItem("id_token", token);
         localStorage.setItem("is_admin", is_admin.toString());
 
-        if (!is_admin) {
-          navigate("/unauthorized");
-          return;
-        }
-
+      if (!is_admin) {
+        navigate("/unauthorized");
+        return;
+      }
       // Redirect to the dashboard or home of backoffice
       navigate("/");
-
-      } else {
-        setError("Invalid credentials.");
-      }
 
     } catch (err: any) {
       console.error("Login error:", err);
