@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiClient } from "../../lib/http";
+import apiClient from "../../lib/http";
 
 interface LoginResponse {
   id_token: string;
@@ -33,15 +33,15 @@ export default function SignIn() {
       const user_info = data.user_info;
       console.log("Login data: ", data);
   
-      apiClient.defaults.headers.common['Authorization'] = "Bearer ${token}";
+      apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       console.log("API response:", data);
       
       const { is_admin } = user_info;
 
-      // Save token and user info (adjust as per your app context/state management)
-        localStorage.setItem("id_token", token);
-        localStorage.setItem("is_admin", is_admin.toString());
+    // Save token and user info (adjust as per your app context/state management)
+      localStorage.setItem("id_token", token);
+      localStorage.setItem("is_admin", is_admin.toString());
 
       if (!is_admin) {
         navigate("/unauthorized");
