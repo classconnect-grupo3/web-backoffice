@@ -21,10 +21,13 @@ export class AuthService {
 
   static isAuthenticated(): boolean {
     const token = this.getToken()
-    return !!token
+    const isAdmin = this.isAdmin()
+    console.log("AuthService.isAuthenticated:", { token: !!token, isAdmin })
+    return !!token && isAdmin
   }
 
   static logout(): void {
+    console.log("AuthService.logout called")
     localStorage.removeItem("id_token")
     localStorage.removeItem("is_admin")
     delete apiClient.defaults.headers.common["Authorization"]
@@ -35,21 +38,9 @@ export class AuthService {
     const token = this.getToken()
     if (token) {
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
-    }
-  }
-
-  static async validateToken(): Promise<boolean> {
-    try {
-      const token = this.getToken()
-      if (!token) return false
-
-      // You can add a token validation endpoint here if available
-      // For now, we'll assume the token is valid if it exists
-      return true
-    } catch (error) {
-      console.error("Token validation failed:", error)
-      this.logout()
-      return false
+      console.log("AuthService.initializeAuth: Token set in headers")
+    } else {
+      console.log("AuthService.initializeAuth: No token found")
     }
   }
 }

@@ -31,29 +31,35 @@ export default function SignIn() {
     setError("")
 
     try {
+      console.log("Attempting login with:", { email })
+
       const { data } = await apiClient.post<LoginResponse>("/login/email", { email, password })
       const token = data.id_token
       const user_info = data.user_info
 
-      console.log("Login data: ", data)
+      console.log("Login successful:", { token: !!token, user_info })
 
-      // Save token and user info first
+      // Save token and user info
       localStorage.setItem("id_token", token)
       localStorage.setItem("is_admin", user_info.is_admin.toString())
 
       // Set the authorization header for future requests
       apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
-      console.log("API response:", data)
+      console.log("Token and admin status saved:", {
+        tokenSaved: !!localStorage.getItem("id_token"),
+        isAdmin: localStorage.getItem("is_admin"),
+      })
 
-      const { is_admin } = user_info
-
-      if (!is_admin) {
+      // Check if user is admin
+      if (!user_info.is_admin) {
+        console.log("User is not admin, redirecting to unauthorized")
         navigate("/unauthorized")
         return
       }
 
-      // Redirect to the dashboard or home of backoffice
+      // Redirect to dashboard
+      console.log("Admin user, redirecting to dashboard")
       navigate("/")
     } catch (err: any) {
       console.error("Login error:", err)
@@ -62,7 +68,6 @@ export default function SignIn() {
         console.error("Response data:", err.response.data)
         console.error("Response status:", err.response.status)
 
-        // Handle specific error cases
         if (err.response.status === 401) {
           setError("Invalid email or password")
         } else if (err.response.status === 403) {
@@ -83,52 +88,72 @@ export default function SignIn() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
-      <h1 className="text-xl font-bold mb-6">Sign In to Backoffice</h1>
-
-      {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
         <div>
-          <label className="block mb-1 font-medium" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="you@example.com"
-            disabled={loading}
-          />
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to Backoffice</h2>
+          <p className="mt-2 text-center text-sm text-gray-600">Admin access required</p>
         </div>
 
-        <div>
-          <label className="block mb-1 font-medium" htmlFor="password">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Your password"
-            disabled={loading}
-          />
-        </div>
+        {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">{error}</div>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {loading ? "Signing in..." : "Sign In"}
-        </button>
-      </form>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Enter your email"
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Enter your password"
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Signing in...
+                </div>
+              ) : (
+                "Sign in"
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }

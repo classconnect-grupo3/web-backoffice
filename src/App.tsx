@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import SignIn from "./pages/AuthPages/SignIn"
 import NotFound from "./pages/OtherPage/NotFound"
 import UserProfiles from "./pages/UserProfiles"
@@ -25,55 +25,44 @@ import UserManagement from "./pages/Users/UserManagement"
 
 export default function App() {
   return (
-    <>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route
-            element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index path="/" element={<Home />} />
+    <Router>
+      <ScrollToTop />
+      <Routes>
+        {/* Public routes */}
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-            <Route path="/authorize-admin" element={<AuthorizeAdmin />} />
-            <Route path="/block-user" element={<BlockUser />} />
-            <Route path="/user-management" element={<UserManagement />} />
+        {/* Protected routes */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Home />} />
+          <Route path="user-management" element={<UserManagement />} />
+          <Route path="authorize-admin" element={<AuthorizeAdmin />} />
+          <Route path="block-user" element={<BlockUser />} />
+          <Route path="profile" element={<UserProfiles />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="blank" element={<Blank />} />
+          <Route path="form-elements" element={<FormElements />} />
+          <Route path="basic-tables" element={<BasicTables />} />
+          <Route path="alerts" element={<Alerts />} />
+          <Route path="avatars" element={<Avatars />} />
+          <Route path="badge" element={<Badges />} />
+          <Route path="buttons" element={<Buttons />} />
+          <Route path="images" element={<Images />} />
+          <Route path="videos" element={<Videos />} />
+          <Route path="line-chart" element={<LineChart />} />
+          <Route path="bar-chart" element={<BarChart />} />
+        </Route>
 
-            {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
-
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
-
-            {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
-
-            {/* Ui Elements */}
-            <Route path="/alerts" element={<Alerts />} />
-            <Route path="/avatars" element={<Avatars />} />
-            <Route path="/badge" element={<Badges />} />
-            <Route path="/buttons" element={<Buttons />} />
-            <Route path="/images" element={<Images />} />
-            <Route path="/videos" element={<Videos />} />
-
-            {/* Charts */}
-            <Route path="/line-chart" element={<LineChart />} />
-            <Route path="/bar-chart" element={<BarChart />} />
-          </Route>
-          {/* Auth Layout */}
-          <Route path="/signin" element={<SignIn />} />
-
-          <Route path="/unauthorized" element={<Unauthorized />} />
-
-          {/* Fallback Route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </>
+        {/* Fallback routes */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   )
 }
