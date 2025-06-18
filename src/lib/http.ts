@@ -1,13 +1,12 @@
 import axios from "axios"
 
-// Create axios instance
 export const apiClient = axios.create({
-  baseURL: "https://your-api-base-url.com/api", // Replace with your actual API base URL
-  timeout: 10000,
+  baseURL: "https://class-connect-main-6b7ca6f.d2.zuplo.dev",
   headers: {
     "Content-Type": "application/json",
   },
-})
+});
+
 
 // Initialize token on app start
 const initializeToken = () => {
