@@ -1,17 +1,40 @@
-import axios from "axios";
+import axios from "axios"
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: "https://class-connect-main-6b7ca6f.d2.zuplo.dev",
   headers: {
     "Content-Type": "application/json",
   },
-});
+})
 
-if (typeof window !== "undefined") {
-  const token = localStorage.getItem("id_token");
-  if (token) {
-    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }
-}
+// Request interceptor to add token to all requests
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("id_token")
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
 
-export default apiClient;
+// Response interceptor to handle token expiration
+apiClient.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token is invalid or expired
+      localStorage.removeItem("id_token")
+      localStorage.removeItem("is_admin")
+
+      // Redirect to login page
+      window.location.href = "/signin"
+    }
+    return Promise.reject(error)
+  },
+)
