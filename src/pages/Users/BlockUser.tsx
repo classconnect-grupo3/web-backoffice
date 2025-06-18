@@ -3,7 +3,7 @@ import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import Button from "../../components/ui/button/Button";
 import { CheckCircle, AlertCircle } from "lucide-react";
-import apiClient from "../../lib/http";
+import { apiClient } from "../../lib/http";
 import Input from "../../components/form/input/InputField";
 
 export default function BlockUser() {
