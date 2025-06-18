@@ -7,7 +7,7 @@ import Button from "../../components/ui/button/Button"
 import Input from "../../components/form/input/InputField"
 import { Modal } from "../../components/ui/modal"
 import { Search, RefreshCw, Shield, Ban, AlertTriangle } from "lucide-react"
-import { apiClient } from "../../lib/http"
+import apiClient from "../../lib/http"
 
 interface User {
   uid: string
@@ -68,13 +68,13 @@ export default function UserManagement() {
 
       // Apply filters
       if (filters.adminsOnly) {
-        filteredUsers = filteredUsers.filter((user) => user.is_admin)
+        filteredUsers = filteredUsers.filter((user: User) => user.is_admin)
       }
       if (filters.blockedOnly) {
-        filteredUsers = filteredUsers.filter((user) => user.is_blocked)
+        filteredUsers = filteredUsers.filter((user: User) => user.is_blocked)
       }
       if (filters.activeOnly) {
-        filteredUsers = filteredUsers.filter((user) => user.is_active)
+        filteredUsers = filteredUsers.filter((user: User) => user.is_active)
       }
 
       setUsers(filteredUsers)
