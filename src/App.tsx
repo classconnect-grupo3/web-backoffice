@@ -44,7 +44,7 @@ export default function App() {
             </ProtectedRoute>
           }
         >
-          <Route index path="/" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="statistics" element={<Statistics />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="authorize-admin" element={<AuthorizeAdmin />} />
