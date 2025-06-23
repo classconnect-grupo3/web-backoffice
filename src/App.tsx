@@ -23,6 +23,7 @@ import AuthorizeAdmin from "./pages/Users/AuthorizeAdmin"
 import BlockUser from "./pages/Users/BlockUser"
 import UserManagement from "./pages/Users/UserManagement"
 import { ThemeProvider } from "./context/ThemeContext"
+import Statistics from "./pages/Dashboard/Statistics"
 
 export default function App() {
   return (
@@ -43,7 +44,8 @@ export default function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Home />} />
+          <Route index path="/" element={<Home />} />
+          <Route path="statistics" element={<Statistics />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="authorize-admin" element={<AuthorizeAdmin />} />
           <Route path="block-user" element={<BlockUser />} />
