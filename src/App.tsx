@@ -22,10 +22,12 @@ import Unauthorized from "./pages/OtherPage/Unauthorized"
 import AuthorizeAdmin from "./pages/Users/AuthorizeAdmin"
 import BlockUser from "./pages/Users/BlockUser"
 import UserManagement from "./pages/Users/UserManagement"
+import { ThemeProvider } from "./context/ThemeContext"
 
 export default function App() {
   return (
-    <Router>
+    <ThemeProvider>
+      <Router>
       <ScrollToTop />
       <Routes>
         {/* Public routes */}
@@ -63,6 +65,7 @@ export default function App() {
         {/* Fallback routes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Router>
+      </Router>
+    </ThemeProvider>
   )
 }
