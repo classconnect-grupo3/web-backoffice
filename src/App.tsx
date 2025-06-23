@@ -23,6 +23,7 @@ import AuthorizeAdmin from "./pages/Users/AuthorizeAdmin"
 import BlockUser from "./pages/Users/BlockUser"
 import UserManagement from "./pages/Users/UserManagement"
 import Statistics from "./pages/Dashboard/Statistics"
+import TestPage from "./pages/TestPage"
 
 export default function App() {
   return (
@@ -33,34 +34,34 @@ export default function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* Protected routes */}
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <AppLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Home />} />
-          <Route path="statistics" element={<Statistics />} />
-          <Route path="user-management" element={<UserManagement />} />
-          <Route path="authorize-admin" element={<AuthorizeAdmin />} />
-          <Route path="block-user" element={<BlockUser />} />
-          <Route path="profile" element={<UserProfiles />} />
-          <Route path="calendar" element={<Calendar />} />
-          <Route path="blank" element={<Blank />} />
-          <Route path="form-elements" element={<FormElements />} />
-          <Route path="basic-tables" element={<BasicTables />} />
-          <Route path="alerts" element={<Alerts />} />
-          <Route path="avatars" element={<Avatars />} />
-          <Route path="badge" element={<Badges />} />
-          <Route path="buttons" element={<Buttons />} />
-          <Route path="images" element={<Images />} />
-          <Route path="videos" element={<Videos />} />
-          <Route path="line-chart" element={<LineChart />} />
-          <Route path="bar-chart" element={<BarChart />} />
-        </Route>
+      {/* Protected routes */}
+      <Route
+        element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index path="/" element={<Home />} />
+        <Route path="test" element={<TestPage />} />
+        <Route path="/statistics" element={<Statistics />} />
+        <Route path="/user-management" element={<UserManagement />} />
+        <Route path="/authorize-admin" element={<AuthorizeAdmin />} />
+        <Route path="/block-user" element={<BlockUser />} />
+        <Route path="/profile" element={<UserProfiles />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/blank" element={<Blank />} />
+        <Route path="/form-elements" element={<FormElements />} />
+        <Route path="/basic-tables" element={<BasicTables />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/avatars" element={<Avatars />} />
+        <Route path="/badge" element={<Badges />} />
+        <Route path="/buttons" element={<Buttons />} />
+        <Route path="/images" element={<Images />} />
+        <Route path="/videos" element={<Videos />} />
+        <Route path="/line-chart" element={<LineChart />} />
+        <Route path="/bar-chart" element={<BarChart />} />
+      </Route>
 
         {/* Fallback routes */}
         <Route path="*" element={<NotFound />} />
