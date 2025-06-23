@@ -22,12 +22,10 @@ import Unauthorized from "./pages/OtherPage/Unauthorized"
 import AuthorizeAdmin from "./pages/Users/AuthorizeAdmin"
 import BlockUser from "./pages/Users/BlockUser"
 import UserManagement from "./pages/Users/UserManagement"
-import { ThemeProvider } from "./context/ThemeContext"
 import Statistics from "./pages/Dashboard/Statistics"
 
 export default function App() {
   return (
-    <ThemeProvider>
       <Router>
       <ScrollToTop />
       <Routes>
@@ -68,6 +66,5 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       </Router>
-    </ThemeProvider>
   )
 }
