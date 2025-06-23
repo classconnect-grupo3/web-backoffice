@@ -1,25 +1,9 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useEffect } from "react"
 import PageMeta from "../../components/common/PageMeta"
-import PageBreadcrumb from "../../components/common/PageBreadCrumb"
+import PageBreadCrumb from "../../components/common/PageBreadCrumb"
 import { apiClient } from "../../lib/http"
-import {
-  Users,
-  UserCheck,
-  UserX,
-  Shield,
-  Ban,
-  Phone,
-  PhoneOff,
-  MapPin,
-  MapPinOff,
-  RefreshCw,
-  TrendingUp,
-  Activity,
-} from "lucide-react"
 
 interface StatsData {
   total_users: number
@@ -40,7 +24,7 @@ interface StatsResponse {
 interface StatCard {
   title: string
   value: number
-  icon: React.ReactNode
+  icon: string
   color: string
   bgColor: string
   percentage?: number
@@ -77,14 +61,14 @@ export default function Statistics() {
     {
       title: "Total Users",
       value: stats.total_users,
-      icon: <Users className="h-6 w-6" />,
+      icon: "👥",
       color: "text-blue-600",
       bgColor: "bg-blue-100 dark:bg-blue-900/20",
     },
     {
       title: "Active Users",
       value: stats.active_users,
-      icon: <UserCheck className="h-6 w-6" />,
+      icon: "✅",
       color: "text-green-600",
       bgColor: "bg-green-100 dark:bg-green-900/20",
       percentage: stats.total_users > 0 ? (stats.active_users / stats.total_users) * 100 : 0,
@@ -93,7 +77,7 @@ export default function Statistics() {
     {
       title: "Inactive Users",
       value: stats.inactive_users,
-      icon: <UserX className="h-6 w-6" />,
+      icon: "😴",
       color: "text-gray-600",
       bgColor: "bg-gray-100 dark:bg-gray-900/20",
       percentage: stats.total_users > 0 ? (stats.inactive_users / stats.total_users) * 100 : 0,
@@ -102,7 +86,7 @@ export default function Statistics() {
     {
       title: "Admin Users",
       value: stats.admin_users,
-      icon: <Shield className="h-6 w-6" />,
+      icon: "🛡️",
       color: "text-purple-600",
       bgColor: "bg-purple-100 dark:bg-purple-900/20",
       percentage: stats.total_users > 0 ? (stats.admin_users / stats.total_users) * 100 : 0,
@@ -111,7 +95,7 @@ export default function Statistics() {
     {
       title: "Blocked Users",
       value: stats.blocked_users,
-      icon: <Ban className="h-6 w-6" />,
+      icon: "🚫",
       color: "text-red-600",
       bgColor: "bg-red-100 dark:bg-red-900/20",
       percentage: stats.total_users > 0 ? (stats.blocked_users / stats.total_users) * 100 : 0,
@@ -120,7 +104,7 @@ export default function Statistics() {
     {
       title: "Users with Phone",
       value: stats.users_with_phone,
-      icon: <Phone className="h-6 w-6" />,
+      icon: "📱",
       color: "text-indigo-600",
       bgColor: "bg-indigo-100 dark:bg-indigo-900/20",
       percentage: stats.total_users > 0 ? (stats.users_with_phone / stats.total_users) * 100 : 0,
@@ -129,7 +113,7 @@ export default function Statistics() {
     {
       title: "Users without Phone",
       value: stats.users_without_phone,
-      icon: <PhoneOff className="h-6 w-6" />,
+      icon: "📵",
       color: "text-orange-600",
       bgColor: "bg-orange-100 dark:bg-orange-900/20",
       percentage: stats.total_users > 0 ? (stats.users_without_phone / stats.total_users) * 100 : 0,
@@ -138,7 +122,7 @@ export default function Statistics() {
     {
       title: "Users with Location",
       value: stats.users_with_location,
-      icon: <MapPin className="h-6 w-6" />,
+      icon: "📍",
       color: "text-teal-600",
       bgColor: "bg-teal-100 dark:bg-teal-900/20",
       percentage: stats.total_users > 0 ? (stats.users_with_location / stats.total_users) * 100 : 0,
@@ -147,7 +131,7 @@ export default function Statistics() {
     {
       title: "Users without Location",
       value: stats.users_without_location,
-      icon: <MapPinOff className="h-6 w-6" />,
+      icon: "📍",
       color: "text-pink-600",
       bgColor: "bg-pink-100 dark:bg-pink-900/20",
       percentage: stats.total_users > 0 ? (stats.users_without_location / stats.total_users) * 100 : 0,
@@ -159,10 +143,10 @@ export default function Statistics() {
     return (
       <div>
         <PageMeta title="App Statistics" description="View campus app usage statistics" />
-        <PageBreadcrumb pageTitle="Statistics" />
+        <PageBreadCrumb pageTitle="Statistics" />
         <div className="flex items-center justify-center h-64">
           <div className="flex items-center gap-3">
-            <RefreshCw className="h-6 w-6 animate-spin text-brand-500" />
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
             <span className="text-gray-600 dark:text-gray-400">Loading statistics...</span>
           </div>
         </div>
@@ -174,10 +158,10 @@ export default function Statistics() {
     return (
       <div>
         <PageMeta title="App Statistics" description="View campus app usage statistics" />
-        <PageBreadcrumb pageTitle="Statistics" />
+        <PageBreadCrumb pageTitle="Statistics" />
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
           <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
-            <Ban className="h-6 w-6" />
+            <span className="text-2xl">⚠️</span>
             <div>
               <h3 className="font-medium">Error Loading Statistics</h3>
               <p className="text-sm mt-1">{error}</p>
@@ -201,6 +185,7 @@ export default function Statistics() {
   return (
     <div>
       <PageMeta title="App Statistics" description="View campus app usage statistics" />
+      <PageBreadCrumb pageTitle="Statistics" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -217,9 +202,9 @@ export default function Statistics() {
           <button
             onClick={fetchStats}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 text-white rounded-lg hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+            <span className={loading ? "animate-spin" : ""}>🔄</span>
             Refresh
           </button>
         </div>
@@ -227,14 +212,14 @@ export default function Statistics() {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-        {statCards.map((card, index) => (
+        {statCards.map((card) => (
           <div
-            key={index}
+            key={card.title}
             className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 hover:shadow-lg transition-shadow"
           >
             <div className="flex items-center justify-between mb-4">
               <div className={`p-3 rounded-xl ${card.bgColor}`}>
-                <div className={card.color}>{card.icon}</div>
+                <span className="text-2xl">{card.icon}</span>
               </div>
               {card.percentage !== undefined && (
                 <div className="text-right">
@@ -284,7 +269,7 @@ export default function Statistics() {
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
-              <Activity className="h-5 w-5 text-green-600" />
+              <span className="text-xl">📊</span>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">User Activity</h3>
           </div>
@@ -339,7 +324,7 @@ export default function Statistics() {
         <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-              <TrendingUp className="h-5 w-5 text-blue-600" />
+              <span className="text-xl">📈</span>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Data Completeness</h3>
           </div>
@@ -396,7 +381,7 @@ export default function Statistics() {
       </div>
 
       {/* Key Insights */}
-      <div className="bg-gradient-to-r from-brand-50 to-blue-50 dark:from-brand-900/20 dark:to-blue-900/20 rounded-2xl border border-brand-200 dark:border-brand-800 p-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Key Insights</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
