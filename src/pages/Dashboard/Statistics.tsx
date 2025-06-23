@@ -229,7 +229,7 @@ export default function Statistics() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
         {statCards.map((card, index) => (
           <div
-            key={card.title}
+            key={index}
             className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 hover:shadow-lg transition-shadow"
           >
             <div className="flex items-center justify-between mb-4">
