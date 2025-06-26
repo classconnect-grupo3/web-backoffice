@@ -21,9 +21,16 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
+    subItems: [{ name: "Overview", path: "/", pro: false }],
+  },
+  {
+    icon: <GridIcon />,
+    name: "Statistics",
     subItems: [
-      { name: "Overview", path: "/", pro: false },
-      { name: "Statistics", path: "/statistics", pro: false },
+      { name: "Users", path: "/statistics/users", pro: false },
+      { name: "Courses", path: "/statistics/courses", pro: false },
+      { name: "Assignments", path: "/statistics/assignments", pro: false },
+      { name: "General", path: "/statistics/general", pro: false },
     ],
   },
   {

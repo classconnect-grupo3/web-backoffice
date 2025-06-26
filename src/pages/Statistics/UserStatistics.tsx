@@ -5,7 +5,7 @@ import PageMeta from "../../components/common/PageMeta"
 import PageBreadCrumb from "../../components/common/PageBreadCrumb"
 import { apiClient } from "../../lib/http"
 
-interface StatsData {
+interface UserStatsData {
   total_users: number
   active_users: number
   inactive_users: number
@@ -18,7 +18,7 @@ interface StatsData {
 }
 
 interface StatsResponse {
-  data: StatsData
+  data: UserStatsData
 }
 
 interface StatCard {
@@ -32,7 +32,7 @@ interface StatCard {
 }
 
 export default function Statistics() {
-  const [stats, setStats] = useState<StatsData | null>(null)
+  const [stats, setStats] = useState<UserStatsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
@@ -142,7 +142,7 @@ export default function Statistics() {
   if (loading) {
     return (
       <div>
-        <PageMeta title="App Statistics" description="View campus app usage statistics" />
+        <PageMeta title="App Statistics" description="View app users statistics" />
         <PageBreadCrumb pageTitle="Statistics" />
         <div className="flex items-center justify-center h-64">
           <div className="flex items-center gap-3">
@@ -157,7 +157,7 @@ export default function Statistics() {
   if (error) {
     return (
       <div>
-        <PageMeta title="App Statistics" description="View campus app usage statistics" />
+        <PageMeta title="App Statistics" description="View app users statistics" />
         <PageBreadCrumb pageTitle="Statistics" />
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
           <div className="flex items-center gap-3 text-red-600 dark:text-red-400">

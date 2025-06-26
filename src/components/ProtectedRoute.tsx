@@ -21,5 +21,5 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
   // User is authenticated and is admin, render the protected content
   console.log("User is authenticated admin, rendering protected content")
-  return children
+  return children 
 }
