@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { useState, useEffect } from "react"
 import { apiClient } from "../../lib/http"
 import { AuthService } from "../../lib/auth"
@@ -36,6 +36,7 @@ export default function UserManagement() {
 
   // Modal states
   const [showBlockModal, setShowBlockModal] = useState(false)
+  const [showUnblockModal, setShowUnblockModal] = useState(false)
   const [showAdminModal, setShowAdminModal] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [actionLoading, setActionLoading] = useState(false)
@@ -108,6 +109,35 @@ export default function UserManagement() {
         AuthService.logout()
       } else {
         setError("Failed to block user. Please try again.")
+      }
+    } finally {
+      setActionLoading(false)
+    }
+  }
+
+  const handleUnblockUser = async () => {
+    if (!selectedUser) return
+
+    setActionLoading(true)
+    try {
+      await apiClient.post("/users/unlock", {
+        email: selectedUser.email,
+      })
+
+      setSuccess(`User ${selectedUser.name} ${selectedUser.surname} has been unblocked successfully`)
+      setShowUnblockModal(false)
+      setSelectedUser(null)
+
+      // Refresh the search results
+      setTimeout(() => {
+        searchUsers()
+      }, 1000)
+    } catch (err: any) {
+      console.error("Unblock user error:", err)
+      if (err.response?.status === 401) {
+        AuthService.logout()
+      } else {
+        setError("Failed to unblock user. Please try again.")
       }
     } finally {
       setActionLoading(false)
@@ -302,7 +332,17 @@ export default function UserManagement() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">
-                        {!user.is_blocked && (
+                        {user.is_blocked ? (
+                          <button
+                            onClick={() => {
+                              setSelectedUser(user)
+                              setShowUnblockModal(true)
+                            }}
+                            className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300"
+                          >
+                            Unblock
+                          </button>
+                        ) : (
                           <button
                             onClick={() => {
                               setSelectedUser(user)
@@ -369,9 +409,46 @@ export default function UserManagement() {
         </div>
       )}
 
-      {/* Make Admin Modal */}
-      {showAdminModal && selectedUser && (
+      {/* Unblock User Modal */}
+      {showUnblockModal && selectedUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Unblock User</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Are you sure you want to unblock{" "}
+              <strong>
+                {selectedUser.name} {selectedUser.surname}
+              </strong>
+              ? This will restore their access to the platform.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => {
+                  setShowUnblockModal(false)
+                  setSelectedUser(null)
+                }}
+                disabled={actionLoading}
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUnblockUser}
+                disabled={actionLoading}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+              >
+                {actionLoading ? "Unblocking..." : "Unblock User"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Make Admin Modal */}
+      {showAdminModal &&
+        selectedUser &&
+        (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Make Admin</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -402,7 +479,7 @@ export default function UserManagement() {
             </div>
           </div>
         </div>
-      )}
+        )}
     </div>
   )
 }
