@@ -68,7 +68,6 @@ const GeneralStatistics: React.FC = () => {
     title,
     value,
     icon,
-    color = "blue",
     subtitle,
   }: {
     title: string

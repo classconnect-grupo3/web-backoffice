@@ -6,9 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { Link, useLocation } from "react-router"
 
 // Assume these icons are imported from an icon library
-import { CalenderIcon, ChevronDownIcon, GridIcon, HorizontaLDots, UserCircleIcon } from "../icons"
+import { ChevronDownIcon, GridIcon, HorizontaLDots, UserCircleIcon, ListIcon } from "../icons"
 import { useSidebar } from "../context/SidebarContext"
-import SidebarWidget from "./SidebarWidget"
 
 type NavItem = {
   name: string
@@ -20,11 +19,6 @@ type NavItem = {
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
-    name: "Dashboard",
-    subItems: [{ name: "Overview", path: "/", pro: false }],
-  },
-  {
-    icon: <GridIcon />,
     name: "Statistics",
     subItems: [
       { name: "Users", path: "/statistics/users", pro: false },
@@ -34,29 +28,14 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    icon: <CalenderIcon />,
-    name: "Calendar",
-    path: "/calendar",
-  },
-  {
-    icon: <UserCircleIcon />,
-    name: "User Profile",
-    path: "/profile",
-  },
-  {
     icon: <UserCircleIcon />,
     name: "User Management",
     path: "/user-management",
   },
   {
-    icon: <UserCircleIcon />,
-    name: "Authorize Admin",
-    path: "/authorize-admin",
-  },
-  {
-    icon: <UserCircleIcon />,
-    name: "Block User",
-    path: "/block-user",
+    icon: <ListIcon />,
+    name: "Courses",
+    path: "/courses",
   },
 ]
 
@@ -271,7 +250,6 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
       </div>
     </aside>
   )

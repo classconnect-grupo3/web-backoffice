@@ -17,7 +17,7 @@ interface UserStatsData {
   users_without_location: number
 }
 
-interface StatsResponse {
+interface UserStatsResponse {
   data: UserStatsData
 }
 
@@ -42,7 +42,7 @@ export default function Statistics() {
     setError("")
 
     try {
-      const response = await apiClient.get<StatsResponse>("/users/admin/stats")
+      const response = await apiClient.get<UserStatsResponse>("/users/admin/stats")
       setStats(response.data.data)
       setLastUpdated(new Date())
     } catch (err: any) {
@@ -57,7 +57,7 @@ export default function Statistics() {
     fetchStats()
   }, [])
 
-  const getStatCards = (stats: StatsData): StatCard[] => [
+  const getStatCards = (stats: UserStatsData): StatCard[] => [
     {
       title: "Total Users",
       value: stats.total_users,

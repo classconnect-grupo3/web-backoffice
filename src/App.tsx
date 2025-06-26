@@ -7,11 +7,14 @@ import TestPage from "./pages/TestPage"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import Unauthorized from "./pages/OtherPage/Unauthorized"
 import UserManagement from "./pages/Users/UserManagement"
+import Courses from "./pages/Courses/Courses"
+import { ErrorBoundary } from "./components/ErrorBoundary"
+
+// Statistics Pages
 import UserStatistics from "./pages/Statistics/UserStatistics"
 import CourseStatistics from "./pages/Statistics/CourseStatistics"
 import AssignmentStatistics from "./pages/Statistics/AssignmentStatistics"
 import GeneralStatistics from "./pages/Statistics/GeneralStatistics"
-import { ErrorBoundary } from "./components/ErrorBoundary.tsx"
 
 // Lazy load template pages to catch import errors
 import { lazy, Suspense } from "react"
@@ -86,13 +89,15 @@ export default function App() {
           />
 
           <Route path="test" element={<TestPage />} />
+
           {/* Statistics Routes */}
           <Route path="statistics/users" element={<UserStatistics />} />
           <Route path="statistics/courses" element={<CourseStatistics />} />
           <Route path="statistics/assignments" element={<AssignmentStatistics />} />
           <Route path="statistics/general" element={<GeneralStatistics />} />
-          
+
           <Route path="user-management" element={<UserManagement />} />
+          <Route path="courses" element={<Courses />} />
 
           <Route
             path="authorize-admin"
